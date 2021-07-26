@@ -1,0 +1,13 @@
+/* ./styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.flex-column{
+    flex-direction: column;
+}
+
+.react-responsive-modal-modal{
+    border-radius: 15px !important;
+    padding:3rem 1.4rem !important;
+    border:0 !important;
+}
