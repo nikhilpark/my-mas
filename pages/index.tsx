@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Modal } from "react-responsive-modal";
+import axios from "axios";
 
 import "react-responsive-modal/styles.css";
 
@@ -16,17 +17,23 @@ export default function Home() {
   const onCloseModal = () => setOpen(false);
   const onOpenModal = () => setOpen(true);
 
-  const handleForm = (e) =>{
+  const handleForm = (e) => {
     e.preventDefault();
+
     const userObj = {
-      username:username,
-      email:email,
-      password:password,
-      passwordRpt:passwordRpt,
-      bday:bday
-    }
-    alert(JSON.stringify(userObj))
+      username: username,
+      email: email,
+      password: password,
+      bday: bday,
+    };
+    if(password === passwordRpt){
+    (async () => {
+      const res = await axios.post("users/signup", userObj);  
+    })();
+  } else{
+    alert("Passwords must match")
   }
+  };
 
   return (
     <>
@@ -95,52 +102,59 @@ export default function Home() {
         <Modal open={open} onClose={onCloseModal}>
           <h2 className="text-2xl mr-10">Complete the registration</h2>
           <form onSubmit={handleForm}>
-          <div className="flex flex-column mt-6 ">
-            <div>
-              <input
-                type="text"
-                className="mt-3 border-2 w-full px-2 py-1"
-                placeholder="Create an Username"
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-              />
+            <div className="flex flex-column mt-6 ">
+              <div>
+                <input
+                  type="text"
+                  className="mt-3 border-2 w-full px-2 py-1"
+                  placeholder="Create an Username"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+              </div> 
+              <div>
+                <input
+                  type="text"
+                  className="mt-3 border-2 w-full px-2 py-1"
+                  placeholder="Enter your E-mail"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  type="password"
+                  className="mt-3 border-2 w-full px-2 py-1"
+                  placeholder="Create your password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  type="password"
+                  className="mt-3 border-2 w-full px-2 py-1"
+                  placeholder="Repeat password"
+                  onChange={(e) => {
+                    setPasswordRpt(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="mt-2">
+                <span className="text-lg ">You were born on {bday} 🎂</span>
+              </div>
+              <div className="self-center mt-6">
+                <button
+                  type="submit"
+                  className="border-gray-400 border-2 w-80 pt-2 pb-2  rounded hover:bg-gray-500 hover:text-white transition ease-in duration-100 active:bg-gray-700"
+                >
+                  Sign Up!
+                </button>
+              </div>
             </div>
-            <div>
-              <input
-                type="text"
-                className="mt-3 border-2 w-full px-2 py-1"
-                placeholder="Enter your E-mail"
-                onChange={(e)=>{
-                  setEmail(e.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                className="mt-3 border-2 w-full px-2 py-1"
-                placeholder="Create your password"
-                onChange={(e) => {setPassword(e.target.value)}}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                className="mt-3 border-2 w-full px-2 py-1"
-                placeholder="Repeat password"
-                onChange={(e) => {setPasswordRpt(e.target.value)}}
-              />
-            </div>
-            <div className="mt-2">
-              <span className="text-lg ">You were born on {bday} 🎂</span>
-            </div>
-            <div className="self-center mt-6">
-              <button type="submit" className="border-gray-400 border-2 w-80 pt-2 pb-2  rounded hover:bg-gray-500 hover:text-white transition ease-in duration-100 active:bg-gray-700">
-                Sign Up!
-              </button>
-            </div>
-          </div>
           </form>
         </Modal>
       </div>
