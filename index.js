@@ -6,17 +6,16 @@ const app = next({ dev });
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/users")
 const handle = app.getRequestHandler();
-
-app
+const secrets = require("./secretsConfig/secrets")
+app 
   .prepare()
   .then(() => {
-    const localURL = "mongodb://localhost:27017/Mymas";
     mongoose
-      .connect(localURL, {
+      .connect(secrets.MONGO_URI, {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
+        useUnifiedTopology: false, 
       })
-      .then(() => console.log("Database Connected"))
+      .then((res) => console.log("Database Connected"))
       .catch((err) => console.log(err));
 
     const server = express();
@@ -35,3 +34,4 @@ app
     console.error(ex.stack);
     process.exit(1);
   });
+
